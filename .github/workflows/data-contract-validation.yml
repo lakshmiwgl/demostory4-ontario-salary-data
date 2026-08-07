@@ -1,0 +1,36 @@
+name: Data Contract Validation
+
+on:
+  pull_request:
+  push:
+    branches:
+      - main
+
+jobs:
+  validate-data-contract:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+
+      - name: Install Data Contract CLI
+        run: |
+          python -m pip install --upgrade pip
+          pip install "datacontract-cli[all]"
+
+      - name: Lint data contract
+        run: |
+          datacontract lint data-contract.yaml
+
+      - name: Test data contract
+        env:
+          DATACONTRACT_POSTGRES_USERNAME: ${{ secrets.DATACONTRACT_POSTGRES_USERNAME }}
+          DATACONTRACT_POSTGRES_PASSWORD: ${{ secrets.DATACONTRACT_POSTGRES_PASSWORD }}
+        run: |
+          datacontract test data-contract.yaml

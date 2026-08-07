@@ -1,0 +1,96 @@
+---
+id: "019fc773-dd1e-75b5-ab64-37ae05dce3a1@019f89e3-15a1-7241-8400-d54476bcb29a"
+kind: "DataContract"
+name: "Demo 4 - Data Contract"
+apiVersion: "v3.1.0"
+domain: "Human Resources"
+dataProduct: "Demo Story 4 :  Ensuring Data Product Reliability "
+version: "1.0.0"
+status: "active"
+description:
+  purpose: "This data contract defines the structure, quality, and governance requirements\
+    \ for the Ontario Public Sector Salary Data Product. It ensures that salary information\
+    \ is consistently published, validated, and consumed while maintaining data quality,\
+    \ integrity, and trust across business users and applications."
+  limitations: "This data product is intended for analytical and reporting purposes\
+    \ only. Data quality validations are limited to the rules defined in this contract.\
+    \ The dataset may not include real-time updates and should not be used as the\
+    \ sole source for operational or legal decisions. Access to the data is governed\
+    \ by organizational policies and user permissions."
+  usage: "Use this data product for workforce analytics, compensation analysis, salary\
+    \ benchmarking, reporting, and dashboard development. Consumers should use certified\
+    \ and governed versions of the data and comply with organizational data governance\
+    \ and privacy policies."
+servers:
+- server: "demostroy 3 postgres connection"
+  type: "postgres"
+  description: "postgres connection"
+  environment: "dev"
+  database: "ibmclouddb"
+  host: "82f5d787-23fb-44c2-94f5-a7a2ce45d078.c0v4phir0ah9ul9trho0.databases.appdomain.cloud"
+  port: 30103
+  schema: "ontario_data"
+  customProperties:
+  - property: "proxy"
+    value: "false"
+  - property: "retry_limit"
+    value: "2"
+schema:
+- name: "EMPLOYEE_SALARY_DISCLOSURE_2025"
+  physicalName: "EMPLOYEE_SALARY_DISCLOSURE_2025"
+  logicalType: "object"
+  physicalType: "application/x-ibm-rel-table"
+  quality:
+  - query: "SELECT COUNT(*)\n    FROM (\n        SELECT MAX(ingestion_time) AS latest_ingestion\n\
+      \        FROM ontario_data.\"EMPLOYEE_SALARY_DISCLOSURE_2025\"\n    ) t\n  \
+      \  WHERE latest_ingestion < NOW() - INTERVAL '24 HOURS';"
+    type: "sql"
+    description: "Ensures the dataset has been refreshed within the last 24 hours."
+    mustBe: 0
+    name: "Dataset Freshness < 24 Hours"
+  properties:
+  - name: "Sector"
+    logicalType: "string"
+    physicalType: "character varying(50)"
+    required: false
+  - name: "Last Name"
+    logicalType: "string"
+    physicalType: "character varying(50)"
+
+    required: false
+  - name: "First Name"
+    logicalType: "string"
+    physicalType: "character varying(50)"
+
+    required: false
+  - name: "Salary"
+    logicalType: "string"
+    physicalType: "real"
+    required: false
+  - name: "Benefits"
+    logicalType: "string"
+    physicalType: "real"
+    required: false
+  - name: "Employer"
+    logicalType: "string"
+    physicalType: "character varying(64)"
+
+    required: false
+  - name: "Job Title"
+    logicalType: "string"
+    physicalType: "character varying(64)"
+
+    required: false
+  - name: "Year"
+    logicalType: "string"
+    physicalType: "integer"
+    required: false
+  - name: "ingestion_time"
+    logicalType: "timestamp"
+    physicalType: "timestamp(6) without time zone"
+
+    required: false
+slaDefaultElement: "Annual Data Freshness"
+slaProperties:
+- property: "refresh_cycle"
+  value: "Annual (365 days)"
