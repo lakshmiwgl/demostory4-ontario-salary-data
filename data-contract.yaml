@@ -63,10 +63,7 @@ schema:
     physicalType: "character varying(50)"
 
     required: false
-  - name: "Salary"
-    logicalType: "string"
-    physicalType: "real"
-    required: false
+
   - name: "Benefits"
     logicalType: "string"
     physicalType: "real"
