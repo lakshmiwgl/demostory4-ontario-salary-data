@@ -7,6 +7,11 @@ domain: "Human Resources"
 dataProduct: "Demo Story 4 :  Ensuring Data Product Reliability "
 version: "1.0.0"
 status: "active"
+authoritativeDefinitions:
+  - type: businessGlossary
+    url: "https://ca-tor.dai.cloud.ibm.com/governance/categories/666a5857-672f-4a08-bd53-f66143ebd27c"
+    description: "Public Sector business glossary containing the business terms used by this data product."
+
 description:
   purpose: "This data contract defines the structure, quality, and governance requirements\
     \ for the Ontario Public Sector Salary Data Product. It ensures that salary information\
@@ -40,6 +45,11 @@ schema:
   physicalName: "EMPLOYEE_SALARY_DISCLOSURE_2025"
   logicalType: "object"
   physicalType: "application/x-ibm-rel-table"
+  tags:
+    - "Public Sector"
+    - "Human Resources"
+    - "Salary"
+    - "Compensation"
   quality:
   - query: "SELECT COUNT(*)\n    FROM (\n        SELECT MAX(ingestion_time) AS latest_ingestion\n\
       \        FROM ontario_data.\"EMPLOYEE_SALARY_DISCLOSURE_2025\"\n    ) t\n  \
@@ -53,43 +63,67 @@ schema:
     logicalType: "string"
     physicalType: "character varying(50)"
     required: false
+    tags:
+    - "Sector"
+    - "Department"
+    authoritativeDefinitions:
+    - type: businessGlossary
+      url: https://ca-tor.dai.cloud.ibm.com/governance/terms/000fa260-fccb-4140-aef5-b5189ec952d2/c5f151ed-3145-4da5-8803-14390dbe011d_1?context=df
+      description: "Official Sector business glossary term."
+    
+
   - name: "Last Name"
     logicalType: "string"
     physicalType: "character varying(50)"
-
     required: false
   - name: "First Name"
     logicalType: "string"
     physicalType: "character varying(50)"
-
     required: false
+
   - name: "Salary"
     logicalType: "string"
     physicalType: "real"
     required: false
+    tags:
+    - "Salary"
+    - "Compensation"
+    authoritativeDefinitions:
+    - type: businessGlossary
+      url: https://ca-tor.dai.cloud.ibm.com/governance/terms/7c1a0f4a-b7ac-4cf9-b9ee-5cfe5aa9f29b/383df44a-01bb-4370-a222-59971931041f_1?context=df
+      description: "Official Salary business glossary term."
+
   - name: "Benefits"
     logicalType: "string"
     physicalType: "real"
     required: false
+
+
+
+
   - name: "Employer"
     logicalType: "string"
     physicalType: "character varying(64)"
-
     required: false
+
   - name: "Job Title"
     logicalType: "string"
     physicalType: "character varying(64)"
-
     required: false
+
+
   - name: "Year"
     logicalType: "string"
     physicalType: "integer"
     required: false
+
+
   - name: "ingestion_time"
     logicalType: "timestamp"
     physicalType: "timestamp(6) without time zone"
-
     required: false
+
+
 slaDefaultElement: "Annual Data Freshness"
 slaProperties:
 - property: "refresh_cycle"

@@ -39,35 +39,40 @@ jobs:
           import sys
           import yaml
 
-          # Get the contract from main
+          # Get previous contract from main
           previous_yaml = subprocess.check_output(
               ["git", "show", "origin/main:data-contract.yaml"]
           )
 
           previous = yaml.safe_load(previous_yaml)
-          
-          # Read the contract from the PR
+
+          # Read current PR contract
           with open("data-contract.yaml") as f:
               current = yaml.safe_load(f)
 
+          # Get table from schema
+          previous_table = previous["schema"][0]
+          current_table = current["schema"][0]
+
+          # Get columns from properties
           previous_fields = {
               field["name"]: field
-              for field in previous.get("schema", [])
+              for field in previous_table.get("properties", [])
           }
 
           current_fields = {
               field["name"]: field
-              for field in current.get("schema", [])
+              for field in current_table.get("properties", [])
           }
 
           errors = []
 
-          # 1. Detect removed fields
+          # Check for removed fields
           for field_name in previous_fields:
               if field_name not in current_fields:
                   errors.append(f"Field removed: {field_name}")
 
-          # 2. Detect type changes
+          # Check for physical type changes
           for field_name in previous_fields:
               if field_name in current_fields:
                   old_type = previous_fields[field_name].get("physicalType")
@@ -79,7 +84,7 @@ jobs:
                           f"{old_type} -> {new_type}"
                       )
 
-          # 3. Detect optional -> required
+          # Check optional -> required
           for field_name in previous_fields:
               if field_name in current_fields:
                   old_required = previous_fields[field_name].get("required", False)
@@ -98,7 +103,6 @@ jobs:
 
           print("✅ No breaking schema changes detected.")
           PY
-
       
 
       - name: Lint data contract
