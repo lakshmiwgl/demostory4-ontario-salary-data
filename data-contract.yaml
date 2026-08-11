@@ -53,7 +53,7 @@ schema:
   quality:
   - query: "SELECT COUNT(*)\n    FROM (\n        SELECT MAX(ingestion_time) AS latest_ingestion\n\
       \        FROM ontario_data.\"EMPLOYEE_SALARY_DISCLOSURE_2025\"\n    ) t\n  \
-      \  WHERE latest_ingestion < NOW() - INTERVAL '365 Days';"
+      \  WHERE latest_ingestion < NOW() - INTERVAL '  24 HOURS';"
     type: "sql"
     description: "Ensures the dataset has been refreshed within the last 365 days."
     mustBe: 0
