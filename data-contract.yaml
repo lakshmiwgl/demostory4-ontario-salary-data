@@ -89,7 +89,7 @@ schema:
     required: false
 
   - name: "Salary"
-    logicalType: "String"
+    logicalType: "string"
     physicalType: "real"
     required: false
     tags:
