@@ -55,9 +55,16 @@ schema:
       \        FROM ontario_data.\"EMPLOYEE_SALARY_DISCLOSURE_2025\"\n    ) t\n  \
       \  WHERE latest_ingestion < NOW() - INTERVAL '365 Days';"
     type: "sql"
-    description: "Ensures the dataset has been refreshed within the last 365 hours."
+    description: "Ensures the dataset has been refreshed within the last 365 days."
     mustBe: 0
-    name: "Dataset Freshness < 365 Hours"
+    name: "Dataset Freshness < 365 Days"
+
+  - query: 'SELECT COUNT(*) FROM ontario_data."EMPLOYEE_SALARY_DISCLOSURE_2025" WHERE "Salary" IS NULL;'
+    type: sql
+    description: "Ensures Salary does not contain null values."
+    mustBe: 0
+    name: Salary Completeness
+
   properties:
   - name: "Sector"
     logicalType: "string"
@@ -82,7 +89,7 @@ schema:
     required: false
 
   - name: "Salary"
-    logicalType: "string"
+    logicalType: "number"
     physicalType: "real"
     required: false
     tags:
