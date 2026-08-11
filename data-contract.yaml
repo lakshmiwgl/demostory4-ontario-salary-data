@@ -88,7 +88,18 @@ schema:
     physicalType: "character varying(50)"
     required: false
 
- 
+  - name: "Salary"
+    logicalType: "Strings"
+    physicalType: "real"
+    required: false
+    tags:
+    - "Salary"
+    - "Compensation"
+    authoritativeDefinitions:
+    - type: businessGlossary
+      url: https://ca-tor.dai.cloud.ibm.com/governance/terms/7c1a0f4a-b7ac-4cf9-b9ee-5cfe5aa9f29b/383df44a-01bb-4370-a222-59971931041f_1?context=df
+      description: "Official Salary business glossary term."
+
   - name: "Benefits"
     logicalType: "string"
     physicalType: "real"
