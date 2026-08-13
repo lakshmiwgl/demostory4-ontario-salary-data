@@ -53,7 +53,7 @@ schema:
   quality:
   - query: "SELECT COUNT(*)\n    FROM (\n        SELECT MAX(ingestion_time) AS latest_ingestion\n\
       \        FROM ontario_data.\"EMPLOYEE_SALARY_DISCLOSURE_2025\"\n    ) t\n  \
-      \  WHERE latest_ingestion < NOW() - INTERVAL '365 Days';"
+      \  WHERE latest_ingestion < NOW() - INTERVAL '24 HOURS';"
     type: "sql"
     description: "Ensures the dataset has been refreshed within the last 365 days."
     mustBe: 0
@@ -66,7 +66,7 @@ schema:
     name: Salary Completeness
 
   properties:
-  - name: "Sectors"
+  - name: "Sector"
     logicalType: "string"
     physicalType: "character varying(50)"
     required: false
@@ -88,17 +88,7 @@ schema:
     physicalType: "character varying(50)"
     required: false
 
-  - name: "Salary"
-    logicalType: "string"
-    physicalType: "real"
-    required: false
-    tags:
-    - "Salary"
-    - "Compensation"
-    authoritativeDefinitions:
-    - type: businessGlossary
-      url: https://ca-tor.dai.cloud.ibm.com/governance/terms/7c1a0f4a-b7ac-4cf9-b9ee-5cfe5aa9f29b/383df44a-01bb-4370-a222-59971931041f_1?context=df
-      description: "Official Salary business glossary term."
+ 
 
   - name: "Benefits"
     logicalType: "string"
